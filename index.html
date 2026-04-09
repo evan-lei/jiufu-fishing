@@ -356,8 +356,11 @@ footer {
   .nav-links { display: none; }
   section { padding: 72px 5vw; }
   .location-inner { grid-template-columns: 1fr; gap: 40px; }
-  .stats-bar { grid-template-columns: repeat(2, 1fr); }
-  .stat-item:nth-child(2n+1)::before { display: none; }
+  .stats-bar { grid-template-columns: repeat(4, 1fr); padding: 28px 2vw; }
+  .stat-item { padding: 10px 4px; }
+  .stat-num { font-size: 22px !important; }
+  .stat-unit { font-size: 12px !important; }
+  .stat-label { font-size: 11px !important; letter-spacing: 0; margin-top: 5px; }
 }
 @media (max-width: 480px) {
   .hero-actions { flex-direction: column; align-items: center; }
