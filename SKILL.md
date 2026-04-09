@@ -154,6 +154,75 @@ print('cert:', (d.get('https_certificate') or {}).get('state'))"
 
 ---
 
+## 移动端响应式规范
+
+> 断点：`@media (max-width: 768px)`
+
+### 通用横向滑动（h-scroll）
+
+多列卡片在手机上改为横向滑动，避免纵向串联。在需要横滑的 grid 容器加 `.h-scroll` class：
+
+```css
+.h-scroll {
+  display: flex !important;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  gap: 16px;
+  padding-bottom: 16px;
+  /* 突破 section 两侧 padding，让卡片贴边 */
+  margin-left: -5vw; margin-right: -5vw;
+  padding-left: 5vw; padding-right: 5vw;
+  scrollbar-width: none;
+}
+.h-scroll::-webkit-scrollbar { display: none; }
+```
+
+卡片子元素设置固定宽度 + snap：
+```css
+/* 钓场分区：82vw（右侧微露提示可滑动） */
+.zones-grid .zone-card { flex: 0 0 82vw; min-width: 0; scroll-snap-align: start; }
+/* 配套设施：78vw */
+.facilities-grid .facility-card { flex: 0 0 78vw; min-width: 0; scroll-snap-align: start; }
+```
+
+圆点指示器 HTML（放在 grid 后面）：
+```html
+<div class="scroll-dots" id="xxxDots">
+  <span class="active"></span><span></span><span></span>
+</div>
+```
+
+圆点联动 JS（通用函数）：
+```js
+function bindScrollDots(gridSel, dotsId) {
+  const grid = document.querySelector(gridSel);
+  const dots = document.querySelectorAll('#' + dotsId + ' span');
+  if (!grid || !dots.length) return;
+  grid.addEventListener('scroll', () => {
+    const cardW = (grid.querySelector(':scope > *') || grid).offsetWidth;
+    const idx = Math.min(Math.round(grid.scrollLeft / cardW), dots.length - 1);
+    dots.forEach((d, i) => d.classList.toggle('active', i === idx));
+  }, { passive: true });
+}
+bindScrollDots('.zones-grid', 'zonesDots');
+bindScrollDots('.facilities-grid', 'facilDots');
+```
+
+### 各模块移动端处理方式
+
+| 模块 | 桌面 | 手机 |
+|---|---|---|
+| Stats Bar | `auto-fit minmax(160px)` | 强制 `repeat(4,1fr)` + 缩小字号/内边距 |
+| 钓场分区 | 3列 grid | `.h-scroll` 横向滑动，每张 82vw |
+| 鱼种图鉴 | `auto-fit minmax(140px)` | 固定 `repeat(3,1fr)`，紧凑 3×2 |
+| Gallery Tabs | flex wrap | `flex:1` 等宽铺满一行，不换行 |
+| 图片画廊 | `auto-fill minmax(240px)` | `repeat(2,1fr)` 2列 |
+| 配套设施 | 3列 grid | `.h-scroll` 横向滑动，每张 78vw |
+| 位置导航 | 左右两列 | `grid-template-columns:1fr`，上下堆叠 |
+
+---
+
 ## 图片/视频交互规范
 
 ### Lightbox 规范
