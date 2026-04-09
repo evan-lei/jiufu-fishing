@@ -361,10 +361,51 @@ footer {
   .stat-num { font-size: 22px !important; }
   .stat-unit { font-size: 12px !important; }
   .stat-label { font-size: 11px !important; letter-spacing: 0; margin-top: 5px; }
+
+  /* 钓场分区：横向滑动卡片 */
+  .zones-grid {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    gap: 16px;
+    margin-top: 32px;
+    padding-bottom: 16px;
+    /* 让 section 的 overflow 不截断 */
+    margin-left: -5vw;
+    margin-right: -5vw;
+    padding-left: 5vw;
+    padding-right: 5vw;
+    /* 隐藏滚动条 */
+    scrollbar-width: none;
+  }
+  .zones-grid::-webkit-scrollbar { display: none; }
+  .zones-grid .zone-card {
+    flex: 0 0 82vw;
+    min-width: 0;
+    scroll-snap-align: start;
+  }
+  /* 滑动提示小圆点 */
+  .zones-dots {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    margin-top: 16px;
+  }
+  .zones-dots span {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: rgba(0,196,212,.3);
+    transition: background .3s;
+  }
+  .zones-dots span.active { background: var(--cyan); }
 }
 @media (max-width: 480px) {
   .hero-actions { flex-direction: column; align-items: center; }
   .btn-primary, .btn-outline { width: 100%; max-width: 280px; text-align: center; }
+}
+/* 桌面隐藏小圆点 */
+@media (min-width: 769px) {
+  .zones-dots { display: none; }
 }
 </style>
 </head>
@@ -505,6 +546,9 @@ footer {
       </div>
     </div>
 
+  </div>
+  <div class="zones-dots" id="zonesDots">
+    <span class="active"></span><span></span><span></span>
   </div>
 </section>
 
@@ -725,6 +769,17 @@ const nav = document.getElementById('nav');
 window.addEventListener('scroll', () => {
   nav.classList.toggle('scrolled', window.scrollY > 60);
 }, { passive: true });
+
+// ZONES DOTS — only on mobile
+(function() {
+  const grid = document.querySelector('.zones-grid');
+  const dots = document.querySelectorAll('#zonesDots span');
+  if (!grid || !dots.length) return;
+  grid.addEventListener('scroll', () => {
+    const idx = Math.round(grid.scrollLeft / grid.offsetWidth);
+    dots.forEach((d, i) => d.classList.toggle('active', i === idx));
+  }, { passive: true });
+})();
 
 // HERO BG
 window.addEventListener('load', () => {
