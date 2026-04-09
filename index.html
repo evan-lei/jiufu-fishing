@@ -362,42 +362,57 @@ footer {
   .stat-unit { font-size: 12px !important; }
   .stat-label { font-size: 11px !important; letter-spacing: 0; margin-top: 5px; }
 
-  /* 钓场分区：横向滑动卡片 */
-  .zones-grid {
-    display: flex;
+  /* ---- 通用横向滑动 mixin ---- */
+  .h-scroll {
+    display: flex !important;
     overflow-x: auto;
     scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;
     gap: 16px;
-    margin-top: 32px;
     padding-bottom: 16px;
-    /* 让 section 的 overflow 不截断 */
     margin-left: -5vw;
     margin-right: -5vw;
     padding-left: 5vw;
     padding-right: 5vw;
-    /* 隐藏滚动条 */
     scrollbar-width: none;
   }
-  .zones-grid::-webkit-scrollbar { display: none; }
-  .zones-grid .zone-card {
-    flex: 0 0 82vw;
-    min-width: 0;
-    scroll-snap-align: start;
-  }
+  .h-scroll::-webkit-scrollbar { display: none; }
+
+  /* 钓场分区 */
+  .zones-grid { margin-top: 32px; }
+  .zones-grid .zone-card { flex: 0 0 82vw; min-width: 0; scroll-snap-align: start; }
+
+  /* 配套设施 */
+  .facilities-grid { margin-top: 32px; }
+  .facilities-grid .facility-card { flex: 0 0 78vw; min-width: 0; scroll-snap-align: start; }
+
   /* 滑动提示小圆点 */
-  .zones-dots {
+  .scroll-dots {
     display: flex;
     justify-content: center;
     gap: 6px;
     margin-top: 16px;
   }
-  .zones-dots span {
+  .scroll-dots span {
     width: 6px; height: 6px; border-radius: 50%;
     background: rgba(0,196,212,.3);
     transition: background .3s;
   }
-  .zones-dots span.active { background: var(--cyan); }
+  .scroll-dots span.active { background: var(--cyan); }
+
+  /* 鱼种：3列×2行 */
+  .fish-grid { grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 32px; }
+  .fish-card { padding: 16px 8px; }
+  .fish-icon { font-size: 26px; margin-bottom: 8px; }
+  .fish-name { font-size: 15px; }
+  .fish-weight { font-size: 18px; }
+
+  /* Gallery tabs 等宽铺满 */
+  .gallery-tabs { gap: 6px; }
+  .gallery-tab { flex: 1; text-align: center; padding: 10px 4px; font-size: 12px; letter-spacing: 0; }
+
+  /* Gallery grid 2列 */
+  .gallery-grid { grid-template-columns: repeat(2, 1fr); gap: 6px; }
 }
 @media (max-width: 480px) {
   .hero-actions { flex-direction: column; align-items: center; }
@@ -405,6 +420,7 @@ footer {
 }
 /* 桌面隐藏小圆点 */
 @media (min-width: 769px) {
+  .scroll-dots { display: none; }
   .zones-dots { display: none; }
 }
 </style>
@@ -475,7 +491,7 @@ footer {
   <h2 class="section-title">选择你的战场</h2>
   <p class="section-desc">大湖与雷强区各具特色，满足不同钓手的极致体验。<br><span style="color:var(--gold-lt);font-family:var(--font-serif);font-size:18px;font-weight:700;letter-spacing:3px;margin-top:10px;display:inline-block;">🎯 一票通玩，两区畅享</span></p>
   <div class="divider"></div>
-  <div class="zones-grid reveal">
+  <div class="zones-grid reveal h-scroll">
 
     <div class="zone-card">
       <div class="zone-header">
@@ -547,7 +563,7 @@ footer {
     </div>
 
   </div>
-  <div class="zones-dots" id="zonesDots">
+  <div class="scroll-dots zones-dots" id="zonesDots">
     <span class="active"></span><span></span><span></span>
   </div>
 </section>
@@ -656,7 +672,7 @@ footer {
   <h2 class="section-title">不只是钓鱼，是一种生活</h2>
   <p class="section-desc">九洑不只是钓场，更是集美食、露营、亲子于一体的休闲目的地。</p>
   <div class="divider"></div>
-  <div class="facilities-grid reveal">
+  <div class="facilities-grid reveal h-scroll">
     <div class="facility-card">
       <div class="facility-img">
         <img src="https://jiufu-1256297898.cos.ap-beijing.myqcloud.com/咖啡厅/IMG_1729.JPG" loading="lazy" alt="九洑小饮">
@@ -687,6 +703,9 @@ footer {
         <div class="facility-desc">萌宠动物园、儿童玩乐区同步开放，垂钓遛娃两不误，全家出游一站到位，大人小孩都尽兴。</div>
       </div>
     </div>
+  </div>
+  <div class="scroll-dots" id="facilDots">
+    <span class="active"></span><span></span><span></span>
   </div>
 </section>
 
@@ -770,16 +789,19 @@ window.addEventListener('scroll', () => {
   nav.classList.toggle('scrolled', window.scrollY > 60);
 }, { passive: true });
 
-// ZONES DOTS — only on mobile
-(function() {
-  const grid = document.querySelector('.zones-grid');
-  const dots = document.querySelectorAll('#zonesDots span');
+// 横向滑动圆点联动（通用）
+function bindScrollDots(gridSel, dotsId) {
+  const grid = document.querySelector(gridSel);
+  const dots = document.querySelectorAll('#' + dotsId + ' span');
   if (!grid || !dots.length) return;
   grid.addEventListener('scroll', () => {
-    const idx = Math.round(grid.scrollLeft / grid.offsetWidth);
+    const cardW = (grid.querySelector(':scope > *') || grid).offsetWidth;
+    const idx = Math.min(Math.round(grid.scrollLeft / cardW), dots.length - 1);
     dots.forEach((d, i) => d.classList.toggle('active', i === idx));
   }, { passive: true });
-})();
+}
+bindScrollDots('.zones-grid', 'zonesDots');
+bindScrollDots('.facilities-grid', 'facilDots');
 
 // HERO BG
 window.addEventListener('load', () => {
