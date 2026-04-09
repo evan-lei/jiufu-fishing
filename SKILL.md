@@ -30,6 +30,8 @@ description: Manage the 九洑环湖路亚基地 website (jiufu.evan-minho.com).
 | SecretKey | 见本地 SKILL |
 | 公开 Base URL | `https://jiufu-1256297898.cos.ap-beijing.myqcloud.com/` |
 
+> ⚠️ 不要用 COS 托管 HTML 页面（大陆节点未备案会强制下载），HTML 统一走 GitHub Pages。
+
 ### 已上传素材结构
 ```
 /
@@ -44,19 +46,57 @@ description: Manage the 九洑环湖路亚基地 website (jiufu.evan-minho.com).
 ```
 
 ### 上传新图片
+
+```bash
+export PATH="$PATH:$HOME/Library/Python/3.9/bin"
+coscmd config -a <SecretId> -s <SecretKey> -b jiufu-1256297898 -r ap-beijing
+
+# 批量上传目录
+coscmd -b jiufu-1256297898 -r ap-beijing upload -rs <本地目录>/ /
+```
+
+或用 Python SDK：
+
 ```python
 import warnings; warnings.filterwarnings('ignore')
 from qcloud_cos import CosConfig, CosS3Client
 
-config = CosConfig(Region='ap-beijing',
-    SecretId='<见本地SKILL>',
-    SecretKey='<见本地SKILL>')
+config = CosConfig(Region='ap-beijing', SecretId='<见本地SKILL>', SecretKey='<见本地SKILL>')
 client = CosS3Client(config)
-
 with open('local_file.jpg', 'rb') as fp:
-    client.put_object(Bucket='jiufu-1256297898', Body=fp,
-                      Key='目录/文件名.jpg', ACL='public-read')
+    client.put_object(Bucket='jiufu-1256297898', Body=fp, Key='目录/文件名.jpg', ACL='public-read')
 ```
+
+### 上传前必须压缩（节省流量费）
+
+取原始 vs 压缩版中**更小的**上传。
+
+```bash
+# JPG/JPEG：最大1920px，质量82
+sips -Z 1920 -s formatOptions 82 input.jpg --out output.jpg
+# PNG：最大1920px
+sips -Z 1920 input.png --out output.png
+# 视频（720p）
+ffmpeg -i input.mp4 -c:v libx264 -crf 26 -preset fast \
+  -vf scale=-2:720 -c:a aac -b:a 96k -movflags +faststart output.mp4
+```
+
+### 上传前检查尺寸，规划 UI 布局
+
+```bash
+for f in *.jpg *.jpeg *.png *.JPG *.JPEG *.PNG; do
+  [ -f "$f" ] || continue
+  w=$(sips -g pixelWidth "$f" | awk '/pixelWidth/{print $2}')
+  h=$(sips -g pixelHeight "$f" | awk '/pixelHeight/{print $2}')
+  orient=$([ "$w" -gt "$h" ] && echo "横图" || echo "竖图")
+  echo "$orient  ${w}x${h}  $f"
+done
+```
+
+布局原则：
+- **全横图**：`grid-template-columns: repeat(auto-fill, minmax(240px,1fr))`
+- **全竖图**：单列或并排 2 列
+- **混排**：竖图 `grid-row: 1 / span N`，横图堆叠另一列
 
 ---
 
@@ -71,35 +111,30 @@ git push origin main
 git remote set-url origin https://github.com/evan-lei/jiufu-fishing.git
 ```
 
-如 token 失效，在此重新生成：`https://github.com/settings/tokens/new`（勾选 `repo` 权限）。
+如 token 失效，重新生成：`https://github.com/settings/tokens/new`（勾选 `repo` 权限）。
 
 ---
 
-## DNS 配置（已完成，仅供参考）
+## DNS 配置（已完成）
 
 - 域名 `evan-minho.com` 由 **Cloudflare** 管理
-- 已添加 CNAME 记录：`jiufu` → `evan-lei.github.io`（DNS only，灰色云朵）
-- 仓库根目录有 `CNAME` 文件内容为 `jiufu.evan-minho.com`
+- CNAME 记录：`jiufu` → `evan-lei.github.io`（DNS only，灰色云朵）
+- 仓库根目录 `CNAME` 文件内容：`jiufu.evan-minho.com`
 
-### HTTPS 证书重新签发（如证书失效）
+### HTTPS 证书重新签发（证书失效时）
 
 ```bash
-# 1. 删除 Pages
 curl -X DELETE https://api.github.com/repos/evan-lei/jiufu-fishing/pages \
-  -H "Authorization: token <TOKEN见本地SKILL>"
-
-# 2. 重建 Pages
+  -H "Authorization: token <TOKEN>"
+sleep 3
 curl -X POST https://api.github.com/repos/evan-lei/jiufu-fishing/pages \
-  -H "Authorization: token <TOKEN见本地SKILL>" \
-  -H "Content-Type: application/json" \
+  -H "Authorization: token <TOKEN>" -H "Content-Type: application/json" \
   -d '{"source": {"branch": "main", "path": "/"}}'
-
-# 3. 等 15 秒检查证书状态
-sleep 15 && curl https://api.github.com/repos/evan-lei/jiufu-fishing/pages \
-  -H "Authorization: token <TOKEN见本地SKILL>" | python3 -c "
+sleep 15
+curl https://api.github.com/repos/evan-lei/jiufu-fishing/pages \
+  -H "Authorization: token <TOKEN>" | python3 -c "
 import sys,json; d=json.load(sys.stdin)
-print('cert:', (d.get('https_certificate') or {}).get('state'))
-"
+print('cert:', (d.get('https_certificate') or {}).get('state'))"
 ```
 
 ---
@@ -109,14 +144,80 @@ print('cert:', (d.get('https_certificate') or {}).get('state'))
 | 模块 | 说明 |
 |------|------|
 | Hero | 全屏背景图、logo、slogan、开业公告、CTA 按钮 |
-| Stats Bar | 5000斤 / 5种 / 2区 / 11h 四项数据 |
-| 钓场分区 | 大湖区（全天180/下午120）+ 雷强区（180）+ 露营区 |
+| Stats Bar | 5000斤 / 5种 / 2区 / 11h |
+| 钓场分区 | 大湖（全天180/下午120）+ 雷强区（180）+ 露营区 |
 | 投放鱼种 | 6种鱼卡片，含重量 |
-| 图片画廊 | 4 个 tab（钓场环境/钓友鱼获/露营风光/九洑小饮），支持 lightbox |
+| 图片画廊 | 4 tab（钓场环境/钓友鱼获/露营风光/九洑小饮），支持 lightbox |
 | 配套设施 | 咖啡厅 + 露营 + 亲子 |
 | 位置导航 | 上1下2图片布局，一键复制「九洑环湖路亚」，支持 lightbox |
 | Footer | logo + slogan + 营业时间 |
 
-## 本地素材备份
+---
 
-原始素材在：`/Users/user/Desktop/九洑/source/`
+## 图片/视频交互规范
+
+### Lightbox 规范
+
+```js
+// 触摸滑动
+lb.addEventListener('touchstart', e => { _tx = e.touches[0].clientX; _ty = e.touches[0].clientY; }, { passive: true });
+lb.addEventListener('touchend', e => {
+  const dx = e.changedTouches[0].clientX - _tx, dy = e.changedTouches[0].clientY - _ty;
+  if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.5) lbNav(dx < 0 ? 1 : -1);
+}, { passive: true });
+
+// 键盘导航
+document.addEventListener('keydown', e => {
+  if (!lb.classList.contains('open')) return;
+  if (e.key === 'Escape') closeLb();
+  if (e.key === 'ArrowLeft') lbNav(-1);
+  if (e.key === 'ArrowRight') lbNav(1);
+});
+```
+
+### 视频预览规范（如未来添加视频）
+
+- 禁止 `autoplay`，改为点击播放（COS 按下行流量计费，autoplay 白烧钱）
+- 使用 `preload="metadata"` 只加载首帧
+- 播放按钮用**白底深色图标**（视频首帧偏暗，黑色按钮会隐身）
+
+```html
+<div class="pthumb">
+  <video src="https://jiufu-1256297898.cos.ap-beijing.myqcloud.com/xxx.mp4"
+         muted playsinline preload="metadata"></video>
+  <div class="pthumb-play"></div>
+</div>
+```
+
+---
+
+## 工作流：更新网站内容
+
+1. 修改 `/Users/user/Documents/jiufu-fishing/index.html`
+2. 如有新图片：压缩 → 上传 COS → 更新 HTML 中的 URL
+3. 提交推送（见上方推送命令）
+4. 30 秒后刷新 `https://jiufu.evan-minho.com` 验证（**强制刷新：Cmd+Shift+R**）
+
+---
+
+## 换电脑时恢复 SKILL
+
+1. Clone 仓库：`git clone https://github.com/evan-lei/jiufu-fishing.git`
+2. 复制 SKILL 到 Cursor：
+   ```bash
+   mkdir -p ~/.cursor/skills/jiufu-fishing
+   cp SKILL.md ~/.cursor/skills/jiufu-fishing/SKILL.md
+   ```
+3. 将占位符替换为真实密钥：
+   - GitHub Token：`https://github.com/settings/tokens`
+   - 腾讯云密钥：`https://console.cloud.tencent.com/cam/capi`
+4. 重启 Cursor 即可生效
+
+---
+
+## 注意事项
+
+- 单文件严禁超过 25MB（GitHub Pages 限制），素材必须放 COS
+- 图片/视频不要提交进 git（在 `.gitignore` 中排除）
+- 本地原始素材备份：`/Users/user/Desktop/九洑/source/`
+- 更新此 SKILL 后，记得脱敏后同步到 GitHub 仓库的 `SKILL.md`
