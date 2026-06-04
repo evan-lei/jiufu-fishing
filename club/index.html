@@ -696,8 +696,8 @@ footer {
     <div class="stat-label">优质鱼种</div>
   </div>
   <div class="stat-item">
-    <div class="stat-num"><span class="count" data-target="4">0</span><span class="stat-unit">区</span></div>
-    <div class="stat-label">大湖 · 雷强 · 荤饵 · 微物</div>
+    <div class="stat-num"><span class="count" data-target="3">0</span><span class="stat-unit">区</span></div>
+    <div class="stat-label">大湖 · 雷强 · 荤饵</div>
   </div>
   <div class="stat-item">
     <div class="stat-num"><span class="count" data-target="14">0</span><span class="stat-unit">h</span></div>
@@ -708,181 +708,83 @@ footer {
 <!-- ============================================================
   STOCKING FEED
 ============================================================ -->
-<section style="background:var(--dark);padding:80px 7vw">
+<section style="background:var(--dark);padding:60px 7vw">
   <div class="sec-eyebrow reveal">STOCKING LOG</div>
-  <h2 class="sec-title reveal">实时鱼汛动态</h2>
-  <p class="sec-desc reveal">持续追加补放，鱼口常新——以下为最新补鱼记录，日期倒序。</p>
-  <div class="reveal" style="max-width:720px">
-    <!-- 每条记录：date | zone tag | fish info -->
-    <div style="display:flex;flex-direction:column;gap:0">
+  <h2 class="sec-title reveal" style="margin-bottom:8px">实时鱼汛动态</h2>
+  <p class="sec-desc reveal" style="margin-bottom:28px">持续追加补放，鱼口常新</p>
 
-      <!-- 06/02 -->
-      <div style="display:flex;gap:0;align-items:stretch">
-        <div style="display:flex;flex-direction:column;align-items:center;width:44px;flex-shrink:0">
-          <div style="width:12px;height:12px;border-radius:50%;background:var(--red);border:2px solid var(--dark);margin-top:18px;flex-shrink:0;box-shadow:0 0 8px rgba(224,85,85,.6)"></div>
-          <div style="flex:1;width:2px;background:rgba(255,255,255,.07)"></div>
-        </div>
-        <div style="padding:12px 0 20px 16px;flex:1">
-          <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
-            <span style="font-size:13px;color:var(--dim);letter-spacing:1px;font-variant-numeric:tabular-nums">06 / 02</span>
-            <span style="font-size:11px;padding:2px 10px;border-radius:10px;background:rgba(224,85,85,.12);border:1px solid rgba(224,85,85,.3);color:#e08070">雷强区</span>
-            <span style="font-size:11px;padding:2px 8px;border-radius:6px;background:rgba(0,196,212,.08);color:var(--cyan)">最新</span>
-          </div>
-          <div style="margin-top:6px;font-size:15px;color:var(--white)">黑鱼 <strong style="color:var(--gold-lt)">400 斤</strong></div>
-        </div>
-      </div>
+  <style>
+    .slog-wrap{max-width:680px;border:1px solid rgba(255,255,255,.07);border-radius:12px;overflow:hidden}
+    .slog-row{display:grid;grid-template-columns:80px 70px 1fr;align-items:center;padding:10px 18px;gap:12px;border-bottom:1px solid rgba(255,255,255,.05);transition:background .2s}
+    .slog-row:last-child{border-bottom:none}
+    .slog-row:hover{background:rgba(255,255,255,.03)}
+    .slog-row.new{background:rgba(0,196,212,.04)}
+    .slog-date{font-size:12px;color:var(--dim);letter-spacing:.5px;font-variant-numeric:tabular-nums}
+    .slog-zone{font-size:11px;padding:2px 8px;border-radius:8px;text-align:center;white-space:nowrap}
+    .slog-zone.lake{background:rgba(0,196,212,.12);border:1px solid rgba(0,196,212,.25);color:var(--cyan)}
+    .slog-zone.lei{background:rgba(224,85,85,.12);border:1px solid rgba(224,85,85,.3);color:#e08070}
+    .slog-zone.meat{background:rgba(201,168,76,.12);border:1px solid rgba(201,168,76,.3);color:var(--gold-lt)}
+    .slog-info{font-size:13px;color:var(--white-70)}
+    .slog-info strong{color:var(--gold-lt)}
+    .slog-new{font-size:10px;padding:1px 6px;border-radius:4px;background:rgba(0,196,212,.15);color:var(--cyan);margin-left:6px;vertical-align:middle}
+    .slog-note{font-size:11px;color:var(--cyan);display:block;margin-top:2px}
+  </style>
 
-      <!-- 05/29 -->
-      <div style="display:flex;gap:0;align-items:stretch">
-        <div style="display:flex;flex-direction:column;align-items:center;width:44px;flex-shrink:0">
-          <div style="width:10px;height:10px;border-radius:50%;background:var(--teal-lt);margin-top:18px;flex-shrink:0"></div>
-          <div style="flex:1;width:2px;background:rgba(255,255,255,.07)"></div>
-        </div>
-        <div style="padding:12px 0 20px 16px;flex:1">
-          <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
-            <span style="font-size:13px;color:var(--dim);letter-spacing:1px">05 / 29</span>
-            <span style="font-size:11px;padding:2px 10px;border-radius:10px;background:rgba(224,85,85,.12);border:1px solid rgba(224,85,85,.3);color:#e08070">雷强区</span>
-          </div>
-          <div style="margin-top:6px;font-size:15px;color:var(--white)">黑鱼 <strong style="color:var(--gold-lt)">600 斤</strong></div>
-        </div>
-      </div>
-
-      <!-- 05/26 -->
-      <div style="display:flex;gap:0;align-items:stretch">
-        <div style="display:flex;flex-direction:column;align-items:center;width:44px;flex-shrink:0">
-          <div style="width:10px;height:10px;border-radius:50%;background:var(--teal-lt);margin-top:18px;flex-shrink:0"></div>
-          <div style="flex:1;width:2px;background:rgba(255,255,255,.07)"></div>
-        </div>
-        <div style="padding:12px 0 20px 16px;flex:1">
-          <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
-            <span style="font-size:13px;color:var(--dim);letter-spacing:1px">05 / 26</span>
-            <span style="font-size:11px;padding:2px 10px;border-radius:10px;background:rgba(0,196,212,.12);border:1px solid rgba(0,196,212,.25);color:var(--cyan)">混合塘</span>
-          </div>
-          <div style="margin-top:6px;font-size:15px;color:var(--white)">鲈鱼 + 鳜鱼 <strong style="color:var(--gold-lt)">500 斤</strong></div>
-        </div>
-      </div>
-
-      <!-- 05/25 -->
-      <div style="display:flex;gap:0;align-items:stretch">
-        <div style="display:flex;flex-direction:column;align-items:center;width:44px;flex-shrink:0">
-          <div style="width:10px;height:10px;border-radius:50%;background:var(--teal-lt);margin-top:18px;flex-shrink:0"></div>
-          <div style="flex:1;width:2px;background:rgba(255,255,255,.07)"></div>
-        </div>
-        <div style="padding:12px 0 20px 16px;flex:1">
-          <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
-            <span style="font-size:13px;color:var(--dim);letter-spacing:1px">05 / 25</span>
-            <span style="font-size:11px;padding:2px 10px;border-radius:10px;background:rgba(224,85,85,.12);border:1px solid rgba(224,85,85,.3);color:#e08070">雷强区</span>
-          </div>
-          <div style="margin-top:6px;font-size:15px;color:var(--white)">黑鱼 <strong style="color:var(--gold-lt)">500 斤</strong></div>
-          <div style="margin-top:4px;font-size:12px;color:var(--cyan)">⚡ 雷强区黑鱼累计总量已超 5000 斤</div>
-        </div>
-      </div>
-
-      <!-- 05/22 -->
-      <div style="display:flex;gap:0;align-items:stretch">
-        <div style="display:flex;flex-direction:column;align-items:center;width:44px;flex-shrink:0">
-          <div style="width:10px;height:10px;border-radius:50%;background:var(--teal-lt);margin-top:18px;flex-shrink:0"></div>
-          <div style="flex:1;width:2px;background:rgba(255,255,255,.07)"></div>
-        </div>
-        <div style="padding:12px 0 20px 16px;flex:1">
-          <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
-            <span style="font-size:13px;color:var(--dim);letter-spacing:1px">05 / 22</span>
-            <span style="font-size:11px;padding:2px 10px;border-radius:10px;background:rgba(201,168,76,.12);border:1px solid rgba(201,168,76,.3);color:var(--gold-lt)">荤饵区</span>
-          </div>
-          <div style="margin-top:6px;font-size:15px;color:var(--white)">鲶鱼 <strong style="color:var(--gold-lt)">600 斤</strong> · 清江鱼 <strong style="color:var(--gold-lt)">200 斤</strong></div>
-        </div>
-      </div>
-
-      <!-- 05/15 -->
-      <div style="display:flex;gap:0;align-items:stretch">
-        <div style="display:flex;flex-direction:column;align-items:center;width:44px;flex-shrink:0">
-          <div style="width:10px;height:10px;border-radius:50%;background:var(--teal-lt);margin-top:18px;flex-shrink:0"></div>
-          <div style="flex:1;width:2px;background:rgba(255,255,255,.07)"></div>
-        </div>
-        <div style="padding:12px 0 20px 16px;flex:1">
-          <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
-            <span style="font-size:13px;color:var(--dim);letter-spacing:1px">05 / 15</span>
-            <span style="font-size:11px;padding:2px 10px;border-radius:10px;background:rgba(201,168,76,.12);border:1px solid rgba(201,168,76,.3);color:var(--gold-lt)">荤饵区</span>
-          </div>
-          <div style="margin-top:6px;font-size:15px;color:var(--white)">白鲳 <strong style="color:var(--gold-lt)">1800 斤</strong></div>
-        </div>
-      </div>
-
-      <!-- 04/28 -->
-      <div style="display:flex;gap:0;align-items:stretch">
-        <div style="display:flex;flex-direction:column;align-items:center;width:44px;flex-shrink:0">
-          <div style="width:10px;height:10px;border-radius:50%;background:var(--teal-lt);margin-top:18px;flex-shrink:0"></div>
-          <div style="flex:1;width:2px;background:rgba(255,255,255,.07)"></div>
-        </div>
-        <div style="padding:12px 0 20px 16px;flex:1">
-          <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
-            <span style="font-size:13px;color:var(--dim);letter-spacing:1px">04 / 28</span>
-            <span style="font-size:11px;padding:2px 10px;border-radius:10px;background:rgba(224,85,85,.12);border:1px solid rgba(224,85,85,.3);color:#e08070">雷强区</span>
-          </div>
-          <div style="margin-top:6px;font-size:15px;color:var(--white)">黑鱼 <strong style="color:var(--gold-lt)">1000 斤</strong></div>
-        </div>
-      </div>
-
-      <!-- 04/22 -->
-      <div style="display:flex;gap:0;align-items:stretch">
-        <div style="display:flex;flex-direction:column;align-items:center;width:44px;flex-shrink:0">
-          <div style="width:10px;height:10px;border-radius:50%;background:var(--teal-lt);margin-top:18px;flex-shrink:0"></div>
-          <div style="flex:1;width:2px;background:rgba(255,255,255,.07)"></div>
-        </div>
-        <div style="padding:12px 0 20px 16px;flex:1">
-          <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
-            <span style="font-size:13px;color:var(--dim);letter-spacing:1px">04 / 22</span>
-            <span style="font-size:11px;padding:2px 10px;border-radius:10px;background:rgba(0,196,212,.12);border:1px solid rgba(0,196,212,.25);color:var(--cyan)">混合塘</span>
-            <span style="font-size:11px;padding:2px 10px;border-radius:10px;background:rgba(224,85,85,.12);border:1px solid rgba(224,85,85,.3);color:#e08070">雷强区</span>
-          </div>
-          <div style="margin-top:6px;font-size:15px;color:var(--white)">翘嘴 <strong style="color:var(--gold-lt)">600 斤</strong> · 黑鱼 <strong style="color:var(--gold-lt)">1000 斤</strong></div>
-        </div>
-      </div>
-
-      <!-- 04/17 -->
-      <div style="display:flex;gap:0;align-items:stretch">
-        <div style="display:flex;flex-direction:column;align-items:center;width:44px;flex-shrink:0">
-          <div style="width:10px;height:10px;border-radius:50%;background:var(--teal-lt);margin-top:18px;flex-shrink:0"></div>
-          <div style="flex:1;width:2px;background:rgba(255,255,255,.07)"></div>
-        </div>
-        <div style="padding:12px 0 20px 16px;flex:1">
-          <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
-            <span style="font-size:13px;color:var(--dim);letter-spacing:1px">04 / 17</span>
-            <span style="font-size:11px;padding:2px 10px;border-radius:10px;background:rgba(0,196,212,.12);border:1px solid rgba(0,196,212,.25);color:var(--cyan)">混合塘</span>
-          </div>
-          <div style="margin-top:6px;font-size:15px;color:var(--white)">鲈鱼 <strong style="color:var(--gold-lt)">1000 斤</strong> · 翘嘴 <strong style="color:var(--gold-lt)">500 斤</strong></div>
-        </div>
-      </div>
-
-      <!-- 04/14 -->
-      <div style="display:flex;gap:0;align-items:stretch">
-        <div style="display:flex;flex-direction:column;align-items:center;width:44px;flex-shrink:0">
-          <div style="width:10px;height:10px;border-radius:50%;background:var(--teal-lt);margin-top:18px;flex-shrink:0"></div>
-          <div style="flex:1;width:2px;background:rgba(255,255,255,.07)"></div>
-        </div>
-        <div style="padding:12px 0 20px 16px;flex:1">
-          <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
-            <span style="font-size:13px;color:var(--dim);letter-spacing:1px">04 / 14</span>
-            <span style="font-size:11px;padding:2px 10px;border-radius:10px;background:rgba(0,196,212,.12);border:1px solid rgba(0,196,212,.25);color:var(--cyan)">混合塘</span>
-          </div>
-          <div style="margin-top:6px;font-size:15px;color:var(--white)">鲈鱼 <strong style="color:var(--gold-lt)">400 斤</strong></div>
-        </div>
-      </div>
-
-      <!-- 04/12 -->
-      <div style="display:flex;gap:0;align-items:stretch">
-        <div style="display:flex;flex-direction:column;align-items:center;width:44px;flex-shrink:0">
-          <div style="width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,.2);margin-top:18px;flex-shrink:0"></div>
-        </div>
-        <div style="padding:12px 0 8px 16px;flex:1">
-          <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
-            <span style="font-size:13px;color:var(--dim);letter-spacing:1px">04 / 12</span>
-            <span style="font-size:11px;padding:2px 10px;border-radius:10px;background:rgba(224,85,85,.12);border:1px solid rgba(224,85,85,.3);color:#e08070">雷强区</span>
-          </div>
-          <div style="margin-top:6px;font-size:15px;color:var(--white)">鲈鱼 <strong style="color:var(--gold-lt)">300 斤</strong></div>
-        </div>
-      </div>
-
+  <div class="slog-wrap reveal">
+    <div class="slog-row new">
+      <span class="slog-date">06 / 02</span>
+      <span class="slog-zone lei">雷强区</span>
+      <span class="slog-info">黑鱼 <strong>400 斤</strong><span class="slog-new">最新</span></span>
+    </div>
+    <div class="slog-row">
+      <span class="slog-date">05 / 29</span>
+      <span class="slog-zone lei">雷强区</span>
+      <span class="slog-info">黑鱼 <strong>600 斤</strong></span>
+    </div>
+    <div class="slog-row">
+      <span class="slog-date">05 / 26</span>
+      <span class="slog-zone lake">混合塘</span>
+      <span class="slog-info">鲈鱼 + 鳜鱼 <strong>500 斤</strong></span>
+    </div>
+    <div class="slog-row">
+      <span class="slog-date">05 / 25</span>
+      <span class="slog-zone lei">雷强区</span>
+      <span class="slog-info">黑鱼 <strong>500 斤</strong><span class="slog-note">⚡ 雷强区黑鱼累计已超 5000 斤</span></span>
+    </div>
+    <div class="slog-row">
+      <span class="slog-date">05 / 22</span>
+      <span class="slog-zone meat">荤饵区</span>
+      <span class="slog-info">鲶鱼 <strong>600 斤</strong> · 清江 <strong>200 斤</strong></span>
+    </div>
+    <div class="slog-row">
+      <span class="slog-date">05 / 15</span>
+      <span class="slog-zone meat">荤饵区</span>
+      <span class="slog-info">白鲳 <strong>1800 斤</strong></span>
+    </div>
+    <div class="slog-row">
+      <span class="slog-date">04 / 28</span>
+      <span class="slog-zone lei">雷强区</span>
+      <span class="slog-info">黑鱼 <strong>1000 斤</strong></span>
+    </div>
+    <div class="slog-row">
+      <span class="slog-date">04 / 22</span>
+      <span class="slog-zone lei">雷强区 / 混合塘</span>
+      <span class="slog-info">黑鱼 <strong>1000 斤</strong> · 翘嘴 <strong>600 斤</strong></span>
+    </div>
+    <div class="slog-row">
+      <span class="slog-date">04 / 17</span>
+      <span class="slog-zone lake">混合塘</span>
+      <span class="slog-info">鲈鱼 <strong>1000 斤</strong> · 翘嘴 <strong>500 斤</strong></span>
+    </div>
+    <div class="slog-row">
+      <span class="slog-date">04 / 14</span>
+      <span class="slog-zone lake">混合塘</span>
+      <span class="slog-info">鲈鱼 <strong>400 斤</strong></span>
+    </div>
+    <div class="slog-row">
+      <span class="slog-date">04 / 12</span>
+      <span class="slog-zone lei">雷强区</span>
+      <span class="slog-info">鲈鱼 <strong>300 斤</strong></span>
     </div>
   </div>
 </section>
@@ -1091,9 +993,10 @@ footer {
       </div>
       <div class="zone-body">
         <div class="zone-price-row">
-          <div class="zone-price-amt" style="font-size:22px">咨询管理员</div>
+          <div class="zone-price-amt">180</div>
+          <div class="zone-price-unit">元 / 人（全天）</div>
         </div>
-        <div class="zone-price-sub">荤饵专属钓场 · 鱼口猛烈</div>
+        <div class="zone-price-sub">下午场 120元 · 夜钓场 120元</div>
         <ul class="zone-perks">
           <li>专属荤饵区域，目标鱼口猛</li>
           <li>白鲳 1800斤 · 鲶鱼 600斤</li>
