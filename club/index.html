@@ -727,7 +727,7 @@ footer {
 
   <style>
     .slog-wrap{max-width:680px;border:1px solid rgba(255,255,255,.07);border-radius:12px;overflow:hidden}
-    .slog-row{display:grid;grid-template-columns:80px 70px 1fr;align-items:center;padding:10px 18px;gap:12px;border-bottom:1px solid rgba(255,255,255,.05);transition:background .2s}
+    .slog-row{display:grid;grid-template-columns:80px minmax(70px,auto) 1fr;align-items:center;padding:10px 18px;gap:12px;border-bottom:1px solid rgba(255,255,255,.05);transition:background .2s}
     .slog-row:last-child{border-bottom:none}
     .slog-row:hover{background:rgba(255,255,255,.03)}
     .slog-row.new{background:rgba(0,196,212,.04)}
@@ -783,10 +783,13 @@ footer {
       <span class="slog-zone lei">雷强区</span>
       <span class="slog-info">黑鱼 <strong>1000 斤</strong></span>
     </div>
-    <div class="slog-row">
-      <span class="slog-date">04 / 22</span>
-      <span class="slog-zone lei">雷强区 / 混合塘</span>
-      <span class="slog-info">黑鱼 <strong>1000 斤</strong> · 翘嘴 <strong>600 斤</strong></span>
+    <div class="slog-row" style="align-items:start">
+      <span class="slog-date" style="padding-top:3px">04 / 22</span>
+      <span style="display:flex;flex-direction:column;gap:4px">
+        <span class="slog-zone lei">雷强区</span>
+        <span class="slog-zone lake">混合塘</span>
+      </span>
+      <span class="slog-info" style="padding-top:3px">黑鱼 <strong>1000 斤</strong> · 翘嘴 <strong>600 斤</strong></span>
     </div>
     <div class="slog-row">
       <span class="slog-date">04 / 17</span>
